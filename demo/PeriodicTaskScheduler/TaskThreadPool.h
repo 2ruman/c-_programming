@@ -1,7 +1,7 @@
 /**
  * Implementation of TaskThreadPool
  *
- * @version 0.1.1
+ * @version 0.1.0
  * @author Truman Kim (truman.t.kim@gmail.com)
  */
 #ifndef _TASK_THREAD_POOL_H_
