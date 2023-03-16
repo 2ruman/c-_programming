@@ -1,7 +1,7 @@
 /**
  * Implementation of TaskBase interface
  *
- * @version 0.1.0
+ * @version 1.0.0
  * @author Truman Kim (truman.t.kim@gmail.com)
  */
 #ifndef _TASK_BASE_H_
@@ -11,7 +11,7 @@ class TaskBase {
   public:
     static constexpr const long STEP_MS = 500;
     enum State {
-        ILDLE,
+        IDLE,
         RUNNING
     };
     TaskBase(int id) : id_(id) {
@@ -47,12 +47,12 @@ class TaskBase {
         return false;
     }
 
-    void updateTime() {
-        curr_time_ += STEP_MS;
-    }
-
     long getTime() {
         return curr_time_;
+    }
+
+    void updateTime() {
+        curr_time_ += STEP_MS;
     }
 
     bool isRunning() {
@@ -60,7 +60,7 @@ class TaskBase {
     }
 
   protected:
-    volatile State state_ = State::ILDLE;
+    volatile State state_ = State::IDLE;
     int id_ = -1;
     long period_ = 0;
     long curr_time_ = 0;

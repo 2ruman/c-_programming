@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.0) # Local cmake version is 3.22.1 though
 
-project(BlockingQueue)
+project(PeriodicTaskScheduler)
 
 set(PROGRAM_NAME ${PROJECT_NAME}_TEST)
 

@@ -21,38 +21,40 @@ class TaskScheduler final {
 
         scheduler_ = std::thread(
             [this] {
-                {
-                    std::unique_lock<std::mutex> lock(tq_mutex_);
-                    tq_condition_.wait(lock, [this] { return !tasks_.empty() || destroyed_; });
+                for (;;) {
+                    {
+                        std::unique_lock<std::mutex> lock(tq_mutex_);
+                        tq_condition_.wait(lock, [this] { return !tasks_.empty() || destroyed_; });
 
-                    std::shared_ptr<TaskBase> task;
-                    std::deque<std::shared_ptr<TaskBase>> tmp_tasks;
+                        std::shared_ptr<TaskBase> task;
+                        std::deque<std::shared_ptr<TaskBase>> tmp_tasks;
 
-                    while (!tasks_.empty()) {
-                        task = tasks_.front();
+                        while (!tasks_.empty()) {
+                            task = tasks_.front();
 
-                        if (task->isPeriodic()) {
-                            task->updateTime();
-                            if (task->checkAndResetTime()) {
+                            if (task->isPeriodic()) {
+                                task->updateTime();
+                                if (task->checkAndResetTime()) {
+                                    if (!task->isRunning()) {
+                                        pool_->schedule(task);
+                                    }
+                                }
+                                tmp_tasks.push_back(task);
+                            } else {
                                 if (!task->isRunning()) {
                                     pool_->schedule(task);
-                                } else {
-                                    std::cout << "Task is still running!!!!" << std::endl;
                                 }
                             }
-                            tmp_tasks.push_back(task);
-                        } else {
-                            pool_->schedule(task);
+                            tasks_.pop_front();
                         }
-                        tasks_.pop_front();
+                        if (destroyed_) {
+                            return;
+                        }
+                        tasks_ = tmp_tasks;  // Reschedule
                     }
-                    if (destroyed_) {
-                        return;
+                    if (TaskBase::STEP_MS > 0) {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(TaskBase::STEP_MS));
                     }
-                    tasks_ = tmp_tasks;  // Reschedule
-                }
-                if (TaskBase::STEP_MS > 0) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(TaskBase::STEP_MS));
                 }
             });
     }
