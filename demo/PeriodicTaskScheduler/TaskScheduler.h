@@ -1,7 +1,7 @@
 /**
  * Implementation of TaskScheduler
  *
- * @version 0.1.0
+ * @version 0.1.1
  * @author Truman Kim (truman.t.kim@gmail.com)
  */
 #include <condition_variable>
@@ -12,7 +12,7 @@
 #include "TaskBase.h"
 #include "TaskThreadPool.h"
 
-#define TASK_POOL_SIZ 2
+#define TASK_POOL_SIZ 3
 
 class TaskScheduler final {
   public:
@@ -35,13 +35,13 @@ class TaskScheduler final {
                             if (task->isPeriodic()) {
                                 task->updateTime();
                                 if (task->checkAndResetTime()) {
-                                    if (!task->isRunning()) {
+                                    if (task->isRunnable()) {
                                         pool_->schedule(task);
                                     }
                                 }
                                 tmp_tasks.push_back(task);
                             } else {
-                                if (!task->isRunning()) {
+                                if (task->isRunnable()) {
                                     pool_->schedule(task);
                                 }
                             }
@@ -76,11 +76,22 @@ class TaskScheduler final {
         tq_condition_.notify_one();
     }
 
-    bool cancel(int task_id) {
+    bool cancel(int id) {
         std::lock_guard<std::mutex> lock(tq_mutex_);
         for (auto it = tasks_.cbegin(); it != tasks_.cend(); it++) {
-            if (it->get()->getId() == task_id) {
-                it->get()->setPeriod(0);
+            if (it->get()->getId() == id) {
+                it->get()->cancel();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool cancel(int id, int type) {
+        std::lock_guard<std::mutex> lock(tq_mutex_);
+        for (auto it = tasks_.cbegin(); it != tasks_.cend(); it++) {
+            if (it->get()->getId() == id && it->get()->getType() == type) {
+                it->get()->cancel();
                 return true;
             }
         }

@@ -1,7 +1,7 @@
 /**
  * Implementation of TaskBase interface.
  *
- * @version 0.1.1
+ * @version 0.2.0
  * @author Truman Kim (truman.t.kim@gmail.com)
  */
 #ifndef _TASK_BASE_H_
@@ -14,9 +14,12 @@ class TaskBase {
     static constexpr const long STEP_MS = 500;
     enum State {
         IDLE,
-        RUNNING
+        RUNNING,
+        CANCELED
     };
-    TaskBase(int id) : id_(id) {
+    TaskBase(int id) : TaskBase(id, 0) {
+    }
+    TaskBase(int id, int type) : id_(id), type_(type) {
     }
     TaskBase() = default;
     ~TaskBase() = default;
@@ -27,6 +30,10 @@ class TaskBase {
 
     int getId() {
         return id_;
+    }
+
+    int getType() {
+        return type_;
     }
 
     bool isPeriodic() {
@@ -57,13 +64,19 @@ class TaskBase {
         curr_time_ += STEP_MS;
     }
 
-    bool isRunning() {
-        return state_ == State::RUNNING;
+    bool isRunnable() {
+        return state_ == State::IDLE;
+    }
+
+    void cancel() {
+        state_ = State::CANCELED;
+        setPeriod(0);
     }
 
   protected:
     std::atomic<State> state_ = State::IDLE;
     int id_ = -1;
+    int type_ = 0;
     long period_ = 0;
     long curr_time_ = 0;
 };

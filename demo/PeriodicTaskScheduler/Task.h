@@ -2,7 +2,7 @@
  * Implementation of Task that implements TaskBase interface.
  * It has assignable worker and reporter.
  *
- * @version 0.1.0
+ * @version 0.1.1
  * @author Truman Kim (truman.t.kim@gmail.com)
  */
 
@@ -27,15 +27,18 @@ class Task : public TaskBase {
     }
 
     Task(int id, TaskInfo& ti)
-        : TaskBase(id), ti_(ti) {
+        : TaskBase(id, ti.getType()), ti_(ti) {
         tag_ = "Task(" + std::to_string(id_) + ") :: ";
     }
 
+    /*
+     * TODO : Fix the incomplete constructor definitions
     Task(const Task& t) : ti_(t.ti_), result_(t.result_) {
     }
 
     Task(Task&& t) : ti_(t.ti_), result_(t.result_) {
     }
+    */
 
     void setWorker(std::function<void(Task&)>&& worker) {
         if (worker) {
