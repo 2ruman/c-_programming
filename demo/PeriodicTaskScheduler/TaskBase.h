@@ -1,11 +1,13 @@
 /**
- * Implementation of TaskBase interface
+ * Implementation of TaskBase interface.
  *
- * @version 1.0.0
+ * @version 0.1.1
  * @author Truman Kim (truman.t.kim@gmail.com)
  */
 #ifndef _TASK_BASE_H_
 #define _TASK_BASE_H_
+
+#include <atomic>
 
 class TaskBase {
   public:
@@ -60,7 +62,7 @@ class TaskBase {
     }
 
   protected:
-    volatile State state_ = State::IDLE;
+    std::atomic<State> state_ = State::IDLE;
     int id_ = -1;
     long period_ = 0;
     long curr_time_ = 0;
