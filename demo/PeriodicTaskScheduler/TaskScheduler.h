@@ -1,7 +1,7 @@
 /**
  * Implementation of TaskScheduler
  *
- * @version 0.1.1
+ * @version 0.2.0
  * @author Truman Kim (truman.t.kim@gmail.com)
  */
 #include <condition_variable>
@@ -92,6 +92,16 @@ class TaskScheduler final {
         for (auto it = tasks_.cbegin(); it != tasks_.cend(); it++) {
             if (it->get()->getId() == id && it->get()->getType() == type) {
                 it->get()->cancel();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool is_scheduled(int id, int ype) {
+       std::lock_guard<std::mutex> lock(tq_mutex_);
+        for (auto it = tasks_.cbegin(); it != tasks_.cend(); it++) {
+            if (it->get()->getId() == id && it->get()->getType() == type) {
                 return true;
             }
         }
