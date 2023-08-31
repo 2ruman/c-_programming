@@ -1,7 +1,7 @@
 /**
  * Implementation of TaskScheduler
  *
- * @version 0.2.1
+ * @version 0.2.2
  * @author Truman Kim (truman.t.kim@gmail.com)
  */
 #include <condition_variable>
@@ -114,5 +114,5 @@ class TaskScheduler final {
     std::mutex tq_mutex_;                          // Lock for Task Queue
     std::deque<std::shared_ptr<TaskBase>> tasks_;  // Task Queue
     std::condition_variable tq_condition_;         // Condition Variable for Task Queue
-    bool destroyed_;
+    bool destroyed_ = false;
 };
