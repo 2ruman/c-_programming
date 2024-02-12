@@ -10,16 +10,16 @@
 ### Loop & Condition Comparison
 
 ```cpp
-// Check if the flag is set in the given flags
+/* Check if the flag is set in the given flags */
 #define CHECK_FLAGS(flags, flag) if (((flags) & (flag)) > 0)
 
-// Check if the result is negative
+/* Check if the result is negative */
 #define CHECK_NEGATIVE(r) if ((r) < 0)
 
-// Break the loop if the result is negative
+/* Break the loop if the result is negative */
 #define NEGATIVE_BREAK(r) if ((r) < 0) break
 
-// Oneshot loop that doesn't repeat
+/* Oneshot loop that doesn't repeat */
 #define ONESHOT_LOOP do {
 #define ONESHOT_LOOP_END } while(false);
 ```
@@ -42,6 +42,7 @@ int test(int flags) {
         CHECK_FLAGS(flags, FLAG_A) NEGATIVE_BREAK(rc = doA());
         CHECK_FLAGS(flags, FLAG_B | FLAG_C) NEGATIVE_BREAK(rc = doBC());
         rc = 0;
+
     ONESHOT_LOOP_END
 
     return rc;
