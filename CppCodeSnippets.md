@@ -14,7 +14,8 @@
 #include <string>
 #include <unordered_map>
 
-const std::string getOrDefault(const std::unordered_map<int, std::string> &map, int key, const std::string &defaultVal) {
+const std::string getOrDefault(const std::unordered_map<int, std::string> &map, int key,
+        const std::string &defaultVal) {
     auto iter = map.find(key);
     return iter != map.end() ? iter->second : defaultVal;
 }
