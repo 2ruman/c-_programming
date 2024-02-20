@@ -14,20 +14,21 @@
 #include <string>
 #include <unordered_map>
 
-const std::string getOrDefault(const std::unordered_map<int, std::string> &map, int key,
+const std::string &getOrDefault(const std::unordered_map<int, std::string> &map, int key,
         const std::string &defaultVal) {
     auto iter = map.find(key);
     return iter != map.end() ? iter->second : defaultVal;
 }
 
-const std::string getOrEmpty(const std::unordered_map<int, std::string> &map, int key) {
+const std::string &getOrEmpty(const std::unordered_map<int, std::string> &map, int key) {
     return getOrDefault(map, key, "");
 }
 
 /* Otherwise, as a single function */
-const std::string getOrEmpty(const std::unordered_map<int, std::string> &map, int key) {
+const std::string &getOrEmpty(const std::unordered_map<int, std::string> &map, int key) {
+    static const string empty{};
     auto iter = map.find(key);
-    return iter != map.end() ? iter->second : "";
+    return iter != map.end() ? iter->second : empty;
 }
 ```
 
