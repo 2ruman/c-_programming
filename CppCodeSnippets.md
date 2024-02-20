@@ -26,7 +26,7 @@ const std::string &getOrEmpty(const std::unordered_map<int, std::string> &map, i
 
 /* Otherwise, as a single function */
 const std::string &getOrEmpty(const std::unordered_map<int, std::string> &map, int key) {
-    static const string empty{};
+    static const std::string empty{};
     auto iter = map.find(key);
     return iter != map.end() ? iter->second : empty;
 }
