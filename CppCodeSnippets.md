@@ -3,6 +3,7 @@
 ### Contents
 + [Container](#container)
 + [Macro](#macro)
++ [String](#string)
 + [Thread](#thread)
 <br>
 
@@ -79,6 +80,40 @@ int main() {
     printf("Result : %d\n", test(FLAG_A|FLAG_C));
     return 0;
 }
+```
+
+## String
+
+### Reverse File Path
+
+```cpp
+#include <algorithm>
+#include <cstddef>
+#include <string>
+
+std::string reversePath(std::string reversed) {
+    std::string ret;
+    std::reverse(reversed.begin(), reversed.end());
+
+    size_t start = 0;
+    size_t end = 0;
+    while ((end = reversed.find('/', start)) != std::string::npos) {
+        std::string eachFile = reversed.substr(start, end - start);
+        std::reverse(eachFile.begin(), eachFile.end());
+        ret += eachFile + "/";
+        start = end + 1;
+    }
+
+    std::string lastFile = reversed.substr(start);
+    if (!lastFile.empty()) {
+        std::reverse(lastFile.begin(), lastFile.end());
+        ret += lastFile;
+    }
+    return ret;
+}
+
+std::string reversedPath = "eEe/DdD/ccc/Bbb/ABC/";
+std::string normalPath = reversePath(reversedPath);
 ```
 
 ## Thread
