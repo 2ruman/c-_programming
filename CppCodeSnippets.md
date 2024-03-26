@@ -105,7 +105,7 @@ std::string ipv4_str = ipToString(ipv4, true);
 std::string ipv6_str = ipToString(ipv6, false);
 ```
 
-### Conver String to IP address
+### Convert String to IP address
 
 ```cpp
 #include <arpa/inet.h>
