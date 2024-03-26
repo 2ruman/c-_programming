@@ -105,6 +105,35 @@ std::string ipv4_str = ipToString(ipv4, true);
 std::string ipv6_str = ipToString(ipv6, false);
 ```
 
+### Conver String to IP address
+
+```cpp
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <string>
+
+int stringToIp(const std::string &ip_str, unsigned char ip[], bool is_v4_or_v6) {
+    return inet_pton(is_v4_or_v6 ? AF_INET : AF_INET6, ip_str.c_str(), ip);
+}
+
+int main(void) {
+    struct in_addr ipv4_addr;
+    struct in6_addr ipv6_addr;
+    int rc;
+    rc = stringToIp("192.168.0.1", reinterpret_cast<unsigned char *>(&ipv4_addr), true);
+    printf("rc = %d, { ", rc);
+    for (int i = 0 ; i < 4 ; i++) {
+        printf("%d%s", ((unsigned char *)&ipv4_addr)[i], (i < 3 ? ", " : " }\n"));
+    }
+    rc = stringToIp("2001:db8:85a3::8a2e:370:7334", reinterpret_cast<unsigned char *>(&ipv6_addr), false);
+    printf("rc = %d, { ", rc);
+    for (int i = 0 ; i < 16 ; i++) {
+        printf("%d%s", ((unsigned char *)&ipv6_addr)[i], (i < 15 ? ", " : " }\n"));
+    }
+    return 0;
+}
+```
+
 ### Reverse File Path
 
 ```cpp
