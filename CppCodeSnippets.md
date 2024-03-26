@@ -95,10 +95,14 @@ std::string ipToString(const unsigned char ip[], bool is_v4_or_v6) {
     return is_v4_or_v6 ? inet_ntop(AF_INET, ip, ip_buf, INET_ADDRSTRLEN)
                         : inet_ntop(AF_INET6, ip, ip_buf, INET6_ADDRSTRLEN);
 }
+
 // IPv4 : 192.168.0.1
 // IPv6 : 2001:db8:85a3::8a2e:370:7334
 unsigned char ipv4[4] = { 192, 168, 0, 1 };
 unsigned char ipv6[16] = { 32, 1, 13, 184, 133, 163, 0, 0, 0, 0, 138, 46, 3, 112, 115, 52 };
+
+std::string ipv4_str = ipToString(ipv4, true);
+std::string ipv6_str = ipToString(ipv6, false);
 ```
 
 ### Reverse File Path
