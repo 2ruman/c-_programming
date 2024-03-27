@@ -93,7 +93,7 @@ int main() {
 #include <string>
 
 std::string ipToString(const unsigned char ip[], bool is_v4_or_v6) {
-    char ip_buf[INET6_ADDRSTRLEN];
+    char ip_buf[INET6_ADDRSTRLEN] = { 0 };
     return inet_ntop(is_v4_or_v6 ? AF_INET : AF_INET6, ip, ip_buf,
                      is_v4_or_v6 ? INET_ADDRSTRLEN : INET6_ADDRSTRLEN);
 }
