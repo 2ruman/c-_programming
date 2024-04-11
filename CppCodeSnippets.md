@@ -43,6 +43,12 @@ const T &getOrDefault(const std::unordered_map<K, T> &map, int key, const T defa
     auto iter = map.find(key);
     return iter != map.end() ? iter->second : defaultVal;
 }
+
+// getOrEmpty() re-written using the generic one
+const std::string &getOrEmpty(const std::unordered_map<int, std::string> &map, int key) {
+    static const std::string empty{};
+    return getOrDefault(map, key, empty);
+}
 ```
 
 ## Macro
