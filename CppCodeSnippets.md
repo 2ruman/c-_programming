@@ -33,6 +33,16 @@ const std::string &getOrEmpty(const std::unordered_map<int, std::string> &map, i
 }
 ```
 
+### Safely Get Value from Generic Map
+
+```cpp
+template <typename K, typename T>
+const T &getVal(const std::unordered_map<K, T> &map, int key, const T defaultVal) {
+    auto iter = map.find(key);
+    return iter != map.end() ? iter->second : defaultVal;
+}
+```
+
 ## Macro
 
 ### Loop & Condition Comparison
