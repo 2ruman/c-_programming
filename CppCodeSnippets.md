@@ -38,8 +38,8 @@ const std::string &getOrEmpty(const std::unordered_map<int, std::string> &map, i
 ```cpp
 #include <unordered_map>
 
-template <typename K, typename T>
-const T &getOrDefault(const std::unordered_map<K, T> &map, int key, const T defaultVal) {
+template <typename K, typename V>
+const V &getOrDefault(const std::unordered_map<K, V> &map, int key, const V defaultVal) {
     auto iter = map.find(key);
     return iter != map.end() ? iter->second : defaultVal;
 }
