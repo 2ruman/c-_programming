@@ -2,6 +2,7 @@
 
 ### Contents
 + [Container](#container)
++ [File](#file)
 + [Macro](#macro)
 + [String](#string)
 + [Thread](#thread)
@@ -48,6 +49,40 @@ const V &getOrDefault(const std::unordered_map<K, V> &map, int key, const V &def
 const std::string &getOrEmpty(const std::unordered_map<int, std::string> &map, int key) {
     static const std::string empty{};
     return getOrDefault(map, key, empty);
+}
+```
+
+## File
+
+### Read Nth Record from File
+
+```cpp
+#include <cstdlib> // for strtol()
+#include <fstream>
+#include <string>
+
+std::string getNth(std::ifstream &ifs, int n) {
+    std::string ret;
+    while ((ifs >> ret) && --n > 0);
+    return (n == 0) ? ret : "";
+}
+
+std::string readNth(const std::string &filepath, int n) {
+    std::ifstream file(filepath);
+    return file.is_open() ? getNth(file, n) : "";
+}
+
+long readNthLong(const std::string &filepath, int n, long defaultVal) {
+    std::string str = readNth(filepath, n);
+    if (str.empty()) {
+        return defaultVal;
+    }
+    char *endPtr;
+    long ret = std::strtol(str.c_str(), &endPtr, 10);
+    if (endPtr == nullptr || *endPtr != '\0') {
+        return defaultVal;
+    }
+    return ret;
 }
 ```
 
